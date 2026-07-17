@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export function MotionEnhancer() {
-  const [showLoader, setShowLoader] = useState(true);
-
   useEffect(() => {
     const root = document.documentElement;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -29,11 +27,9 @@ export function MotionEnhancer() {
 
     if (reduceMotion) {
       revealTargets.forEach((element) => element.classList.add("is-visible"));
-      const hideTimer = window.setTimeout(() => setShowLoader(false), 0);
-      return () => window.clearTimeout(hideTimer);
+      return;
     }
 
-    const loaderTimer = window.setTimeout(() => setShowLoader(false), 1750);
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -61,6 +57,14 @@ export function MotionEnhancer() {
     const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
     const cleanups: Array<() => void> = [];
 
+    document.querySelectorAll<HTMLAnchorElement>(".mobile-menu nav a").forEach((link) => {
+      const closeMenu = () => {
+        link.closest<HTMLDetailsElement>("details")?.removeAttribute("open");
+      };
+      link.addEventListener("click", closeMenu);
+      cleanups.push(() => link.removeEventListener("click", closeMenu));
+    });
+
     if (canHover) {
       document.querySelectorAll<HTMLElement>(".button, .header-cta").forEach((button) => {
         const attract = (event: PointerEvent) => {
@@ -84,24 +88,11 @@ export function MotionEnhancer() {
     }
 
     return () => {
-      window.clearTimeout(loaderTimer);
       window.removeEventListener("scroll", onScroll);
       observer.disconnect();
       cleanups.forEach((cleanup) => cleanup());
     };
   }, []);
 
-  return (
-    <>
-      {showLoader && (
-        <div className="page-loader" aria-hidden="true">
-          <div className="loader-word">BOOMN<span>AI</span></div>
-          <div className="loader-track"><i /></div>
-          <p>Booting the growth engine</p>
-        </div>
-      )}
-      <div className="scroll-progress" aria-hidden="true" />
-      <noscript><style>{`.page-loader{display:none!important}`}</style></noscript>
-    </>
-  );
+  return <div className="scroll-progress" aria-hidden="true" />;
 }

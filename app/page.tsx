@@ -180,6 +180,7 @@ export default function Home() {
   return (
     <main>
       <MotionEnhancer />
+      <a className="skip-link" href="#main-content">Skip to content</a>
 
       <header className="site-header">
         <a className="brand" href="#top" aria-label="Boomn AI home">
@@ -207,13 +208,13 @@ export default function Home() {
         </details>
       </header>
 
-      <section className="hero" id="top">
+      <section className="hero" id="top" aria-labelledby="hero-title">
         <div className="hero-grid" aria-hidden="true" />
         <div className="hero-glow" aria-hidden="true" />
 
-        <div className="hero-copy">
+        <div className="hero-copy" id="main-content">
           <p className="badge"><i /> Accepting clients · Q3 2026</p>
-          <h1>
+          <h1 id="hero-title">
             <span className="h1-line"><span>We get you clients.</span></span>
             <span className="h1-line"><span className="grad">On autopilot.</span></span>
           </h1>
@@ -224,7 +225,7 @@ export default function Home() {
           </p>
           <div className="hero-actions">
             <a className="button button-gold" href="#contact">Get your free strategy call <span>↗</span></a>
-            <a className="button button-ghost" href="#ai-hub">Talk to our AI live <span aria-hidden="true">◈</span></a>
+            <a className="button button-ghost" href="#ai-hub">Explore the AI system <span aria-hidden="true">◈</span></a>
           </div>
 
           <ul className="hero-stats">
@@ -276,8 +277,9 @@ export default function Home() {
         </div>
 
         <div className="service-grid">
-          {services.map((service) => (
+          {services.map((service, index) => (
             <article className={`service-card${service.span === "wide" ? " is-wide" : ""}`} key={service.id}>
+              <span className="service-number" aria-hidden="true">0{index + 1}</span>
               <span className="service-icon" aria-hidden="true">{service.icon}</span>
               <h3>{service.title}</h3>
               <p>{service.copy}</p>
@@ -387,7 +389,7 @@ export default function Home() {
         <p>Book a free strategy call. We&apos;ll map your market, size the opportunity, and show you the shortest path to leads on autopilot.</p>
         <div className="contact-actions">
           <a className="button button-gold" href="mailto:hello@boomnai.com">Get your free strategy call <span>↗</span></a>
-          <a className="button button-ghost" href="#ai-hub">Talk to our AI live <span aria-hidden="true">◈</span></a>
+          <a className="button button-ghost" href="#ai-hub">Explore the AI system <span aria-hidden="true">◈</span></a>
         </div>
       </section>
 
@@ -419,18 +421,16 @@ export default function Home() {
           <nav aria-label="Company navigation">
             <h3>Company</h3>
             <a href="#contact">Contact</a>
-            <a href="#top">Privacy Policy</a>
-            <a href="#top">Terms of Service</a>
-            <a href="#top">Careers</a>
+            <a href="mailto:hello@boomnai.com">hello@boomnai.com</a>
+            <a href="#process">How it works</a>
           </nav>
 
           <div className="footer-cta">
             <h3>Join the AI revolution</h3>
             <p>Monthly playbook on AI lead-gen, voice agents, and conversion systems.</p>
-            <form className="footer-form" action="#" aria-label="Newsletter signup">
-              <input type="email" placeholder="you@company.com" aria-label="Email address" />
-              <button type="button" aria-label="Subscribe">↗</button>
-            </form>
+            <a className="footer-playbook" href="mailto:hello@boomnai.com?subject=Send%20me%20the%20Boomn%20AI%20playbook">
+              Get the monthly playbook <span aria-hidden="true">↗</span>
+            </a>
           </div>
         </div>
 
